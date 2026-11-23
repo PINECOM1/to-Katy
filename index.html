@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Для тебя 💗</title>
+<style>
+:root{color-scheme:light;--p:#ff4f9a;--p2:#ff8fc2;--p3:#ffd1e6;--bg:#fff7fb;--ink:#7a1f4d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:radial-gradient(circle at 20% 10%,#ffe3f0,transparent 50%),radial-gradient(circle at 80% 90%,#ffd6ea,transparent 50%),var(--bg);
+font-family:Georgia,'Times New Roman',serif;color:var(--ink);overflow:hidden;position:relative}
+#hearts,#g{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+.h{pointer-events:none;position:absolute;bottom:-40px;color:var(--p2);opacity:.6;animation:up linear infinite}
+@keyframes up{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.slide{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;transition:opacity 1.2s,transform 1.2s}
+.slide.off{opacity:0;transform:scale(1.15);pointer-events:none}
+.hide{display:none}
+.card{background:rgba(255,255,255,.75);backdrop-filter:blur(10px);border:1px solid var(--p3);border-radius:28px;
+padding:36px 28px;max-width:440px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(255,79,154,.2);animation:in 1.2s both}
+@keyframes in{from{opacity:0;transform:translateY(30px) scale(.95)}}
+.heart{font-size:54px;display:inline-block;animation:beat 1.4s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.25)}30%{transform:scale(1)}45%{transform:scale(1.18)}}
+h1{font-size:28px;margin:10px 0 8px;color:var(--p);font-weight:normal;letter-spacing:.5px}
+p{line-height:1.6;margin:0 0 20px}
+.blanks{font-size:30px;letter-spacing:10px;color:var(--p2);margin-bottom:18px}
+input{width:100%;padding:14px 18px;border-radius:16px;border:2px solid var(--p3);background:#fff;font-size:18px;text-align:center;color:var(--ink);outline:none;transition:.3s;font-family:inherit}
+input:focus{border-color:var(--p);box-shadow:0 0 0 5px rgba(255,79,154,.15)}
+button{margin-top:16px;width:100%;padding:14px;border:0;border-radius:16px;font-size:18px;color:#fff;cursor:pointer;font-family:inherit;
+background:linear-gradient(135deg,var(--p2),var(--p));box-shadow:0 8px 24px rgba(255,79,154,.4);transition:.2s}
+button:hover{transform:translateY(-2px)}button:active{transform:scale(.97)}
+.shake{animation:sh .5s}
+@keyframes sh{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
+#msg{min-height:22px;margin-top:12px;font-size:15px;color:var(--p)}
+.term{width:100%;max-width:1000px;background:rgba(255,255,255,.88);backdrop-filter:blur(8px);border:1px solid var(--p2);border-radius:18px;
+box-shadow:0 20px 70px rgba(255,79,154,.35);overflow:hidden;animation:in 1.2s both;font-family:'Courier New',monospace}
+.bar{background:linear-gradient(90deg,var(--p3),#fff0f7);padding:10px 14px;display:flex;gap:7px;align-items:center;font-size:13px;color:var(--ink)}
+.bar i{width:12px;height:12px;border-radius:50%;background:var(--p2);display:block}
+.bar span{margin-left:8px}
+#out{padding:18px;min-height:240px;max-height:80vh;overflow:auto;color:var(--p);font-size:14px;line-height:1.5;word-break:break-all}
+.cur{display:inline-block;width:9px;height:16px;background:var(--p);vertical-align:-3px;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+#final{font-family:Georgia,serif;font-size:clamp(26px,6vw,40px);text-align:center;color:var(--p);margin-top:16px;word-break:normal;line-height:1.3;text-shadow:0 4px 20px rgba(255,79,154,.3)}
+#final span{display:inline-block;opacity:0;transform:translateY(14px) scale(.8);animation:pop .6s forwards}
+@keyframes pop{to{opacity:1;transform:none}}
+.dim{color:var(--p2)}
+.fx{position:fixed;pointer-events:none;z-index:40;animation:tr 1s ease-out forwards}
+@keyframes tr{to{transform:translateY(-50px) scale(.4);opacity:0}}
+.bu{position:fixed;pointer-events:none;z-index:40;font-size:22px;animation:bu 1.4s ease-out forwards}
+@keyframes bu{to{transform:translate(var(--dx),var(--dy)) scale(.4) rotate(40deg);opacity:0}}
+.pt{position:fixed;top:-20px;z-index:4;pointer-events:none;background:linear-gradient(135deg,#ffc2dd,#ff6fae);border-radius:150% 0 150% 0;opacity:.85;animation:pf linear forwards}
+@keyframes pf{to{transform:translate(var(--sx),112vh) rotate(var(--r))}}
+#flash{position:fixed;inset:0;background:radial-gradient(circle,#fff,#ff8fc2 60%,transparent);opacity:0;pointer-events:none;z-index:50}
+#flash.go{animation:fl 1.1s ease-out}
+@keyframes fl{25%{opacity:.95}}
+.term{transition:background 2s,box-shadow 2s,border-color 2s}
+.term.clear{background:rgba(255,255,255,.18);border-color:transparent;backdrop-filter:none;box-shadow:none}
+.term.clear .bar{opacity:.3}
+#sec{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:14px;z-index:30;font-size:20px;opacity:.35;cursor:pointer;animation:beat 1.6s infinite}
+#kiss{position:fixed;left:0;right:0;margin:0 auto;width:64px;height:64px;padding:0;border-radius:50%;font-size:28px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:30;animation:in 1s both}
+.toast{position:fixed;left:0;right:0;top:22%;text-align:center;z-index:60;font-size:26px;color:var(--p);pointer-events:none;text-shadow:0 4px 20px rgba(255,79,154,.4);animation:tr 3s ease-out forwards}
+</style>
+</head>
+<body>
+<div id="hearts"></div>
+<canvas id="g" class="hide"></canvas>
+
+<section class="slide" id="s1">
+ <div class="card" id="card">
+  <div class="heart">💗</div>
+  <h1>Угадай слово (4 буквы)</h1>
+  
+  <div class="blanks">_ _ _ _</div>
+  <input id="ans" placeholder="Напиши здесь…" autocomplete="off" autocapitalize="off">
+  <div id="msg"></div>
+  <button id="send">Отправить</button>
+ </div>
+</section>
+
+<section class="slide off hide" id="s3">
+ <div class="term">
+  <div class="bar"><i></i><i></i><i></i><span>katya@love:~$</span></div>
+  <div id="out"></div>
+ </div>
+</section>
+
+<div id="flash"></div>
+<div id="sec" class="hide">♡</div>
+<button id="kiss" class="hide">💋</button>
+
+<script>
+// плавающие сердечки
+const hs=document.getElementById('hearts');
+for(let i=0;i<22;i++){const h=document.createElement('div');h.className='h';h.textContent=['♥','💗','💕','♡'][i%4];
+h.style.left=Math.random()*100+'%';h.style.fontSize=(14+Math.random()*26)+'px';
+h.style.animationDuration=(9+Math.random()*10)+'s';h.style.animationDelay=(-Math.random()*15)+'s';hs.appendChild(h);}
+
+const ans=document.getElementById('ans'),msg=document.getElementById('msg'),card=document.getElementById('card');
+const ok=['love','лав','любовь'];
+function check(){
+ const v=ans.value.trim().toLowerCase();
+ if(ok.includes(v)){start();return;}
+ card.classList.remove('shake');void card.offsetWidth;card.classList.add('shake');
+ msg.textContent=v?'Почти! Подсказка: слово английское, 4 буквы 💗':'Напиши свой ответ 💗';
+}
+document.getElementById('send').onclick=check;
+ans.addEventListener('keydown',e=>{if(e.key==='Enter')check()});
+
+// галактика из 0 и 1
+const cv=document.getElementById('g'),cx=cv.getContext('2d');
+let W,H,stars=[],run=false,t0=0;
+function size(){const d=devicePixelRatio||1;W=cv.width=innerWidth*d;H=cv.height=innerHeight*d;}
+addEventListener('resize',size);
+function build(){
+ stars=[];const n=900,arms=3;
+ for(let i=0;i<n;i++){
+  const r=Math.pow(Math.random(),.7),arm=i%arms;
+  const a=arm*(Math.PI*2/arms)+r*5+(Math.random()-.5)*.5*(1-r*.4);
+  stars.push({r,a,ch:Math.random()<.5?'0':'1',s:10+Math.random()*12,o:.3+Math.random()*.7,
+  c:['#ff4f9a','#ff8fc2','#ffb3d6','#e0338a'][Math.floor(Math.random()*4)],f:Math.random()*6});
+ }
+}
+function draw(ts){
+ if(!run)return;
+ const t=(ts-t0)/1000,d=devicePixelRatio||1;gt=t;
+ cx.clearRect(0,0,W,H);
+ const g=cx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)/1.4);
+ g.addColorStop(0,'#fff');g.addColorStop(.25,'#ffe6f2');g.addColorStop(1,'#ffc4e0');
+ cx.fillStyle=g;cx.fillRect(0,0,W,H);
+ const R=Math.min(W,H)*.48*Math.min(1,t/2+.15),ease=Math.min(1,t/3);
+ cx.textAlign='center';cx.textBaseline='middle';
+ for(const s of stars){
+  const ang=s.a+t*(.5/(s.r+.25));
+  const rr=s.r*R*ease+ (1-ease)*0;
+  let x=W/2+Math.cos(ang)*rr*1.35,y=H/2+Math.sin(ang)*rr*.62;
+  if(morph>0){const hp=heartPt(s,R);x+=(hp.x-x)*morph;y+=(hp.y-y)*morph;}
+  if(Math.random()<.01)s.ch=s.ch==='0'?'1':'0';
+  cx.globalAlpha=s.o*(.6+.4*Math.sin(t*2+s.f))*Math.min(1,t);
+  cx.fillStyle=s.c;cx.font=(s.s*d*(1.1-s.r*.5))+'px monospace';cx.fillText(s.ch,x,y);
+ }
+ extras(t,d);
+ // светящееся ядро
+ cx.globalAlpha=1;
+ const c=cx.createRadialGradient(W/2,H/2,0,W/2,H/2,R*.35);
+ c.addColorStop(0,'rgba(255,79,154,.55)');c.addColorStop(1,'rgba(255,79,154,0)');
+ cx.fillStyle=c;cx.fillRect(0,0,W,H);
+ requestAnimationFrame(draw);
+}
+
+function start(){flash();
+ document.getElementById('s1').classList.add('off');
+ setTimeout(()=>{
+  document.getElementById('s1').classList.add('hide');
+  hs.style.display='none';
+  cv.classList.remove('hide');size();build();run=true;t0=performance.now();requestAnimationFrame(draw);
+ },1000);
+ setTimeout(terminal,6500);
+}
+
+// терминал
+const phrase='❤️Я тебя люблю, Катя❤️';
+function terminal(){
+ const s3=document.getElementById('s3');
+ s3.classList.remove('hide');void s3.offsetWidth;s3.classList.remove('off');
+ const out=document.getElementById('out');
+ 
+ const cmd='$ ./decode --love';
+ out.innerHTML='<span id="cmd"></span><span class="cur" id="cur"></span>';
+ let i=0;const cm=document.getElementById('cmd');
+ const tc=setInterval(()=>{cm.textContent+=cmd[i++];if(i>=cmd.length){clearInterval(tc);setTimeout(reveal,500);}},60);
+ 
+ function reveal(){
+  document.getElementById('cur').remove();
+  out.insertAdjacentHTML('beforeend','<div id="final"></div>');
+  const f=document.getElementById('final');
+  binaryText(f);
+  out.scrollTop=out.scrollHeight;
+  setTimeout(rain,1500);finale();
+ }
+}
+// фраза, набранная «двоичным шрифтом»: буквы собраны из нулей и единиц
+function binaryText(box){
+ let lines=['❤️ Я тебя люблю,','Катя ❤️'];
+ const dpr=devicePixelRatio||1;
+ const w=Math.floor(Math.min(box.parentElement.clientWidth-36,940));
+ if(w<600)lines=['❤️ Я тебя','люблю,','Катя ❤️'];
+ const m=document.createElement('canvas').getContext('2d');
+ let fs=170;m.font='bold '+fs+'px Arial';
+ const mw=Math.max(...lines.map(l=>m.measureText(l).width));
+ fs=Math.floor(fs*Math.min(1,w*.96/mw));
+ const lh=fs*1.3,h=Math.ceil(lh*lines.length+fs*.2);
+ const off=document.createElement('canvas');off.width=w;off.height=h;
+ const o=off.getContext('2d');o.font='bold '+fs+'px Arial';o.textAlign='center';o.textBaseline='middle';
+ lines.forEach((l,i)=>o.fillText(l,w/2,lh*(i+.55)));
+ const d=o.getImageData(0,0,w,h).data,cell=Math.max(4,Math.round(fs/15)),pts=[];
+ for(let y=cell/2;y<h;y+=cell)for(let x=cell/2;x<w;x+=cell){
+  const A=(px,py)=>px>=0&&py>=0&&px<w&&py<h&&d[(Math.floor(py)*w+Math.floor(px))*4+3]>110;
+  if(A(x,y))pts.push({x,y,l:Math.floor(y/lh),e:!(A(x+cell,y)&&A(x-cell,y)&&A(x,y+cell)&&A(x,y-cell)),ch:Math.random()<.5?'0':'1',f:Math.random()*6});
+ }
+ pts.sort((a,b)=>a.l-b.l||a.x-b.x);
+ const cv2=document.createElement('canvas');cv2.width=w*dpr;cv2.height=h*dpr;
+ cv2.style.cssText='display:block;margin:12px auto 0;width:'+w+'px;height:'+h+'px';
+ box.appendChild(cv2);
+ const c=cv2.getContext('2d');c.scale(dpr,dpr);
+ c.font='bold '+Math.round(cell*1.5)+'px monospace';c.textAlign='center';c.textBaseline='middle';
+ let n=0;
+ (function loop(ts){
+  c.clearRect(0,0,w,h);n=Math.min(pts.length,n+Math.max(8,Math.round(pts.length/260)));
+  for(let i=0;i<n;i++){const p=pts[i];
+   if(Math.random()<.004)p.ch=p.ch==='0'?'1':'0';
+   const fresh=n-i<40;
+   c.globalAlpha=fresh?1:.75+.25*Math.sin(ts/400+p.f);
+   c.fillStyle=fresh?'#ff1f7d':(p.e?'#d4146f':(i%3?'#ff6fae':'#ffa6cf'));
+   c.shadowColor='rgba(255,79,154,.7)';c.shadowBlur=fresh?14:0;
+   c.fillText(p.ch,p.x,p.y);}
+  requestAnimationFrame(loop);
+ })(0);
+}
+
+// --- доп. эффекты ---
+let morph=0,morphOn=false,gt=0,sp=[],shoot=null,lastT=0;
+function heartPt(s,R){
+ if(s.th===undefined){s.th=Math.random()*Math.PI*2;s.k=Math.random()<.35?1:Math.sqrt(Math.random());}
+ const th=s.th,sc=R*.95/16*(1+.05*Math.sin(gt*4)),k=s.k;
+ const hx=16*Math.pow(Math.sin(th),3),hy=13*Math.cos(th)-5*Math.cos(2*th)-2*Math.cos(3*th)-Math.cos(4*th);
+ return{x:W/2+hx*sc*k,y:H/2-hy*sc*k+sc*2};
+}
+function extras(t,d){
+ cx.globalAlpha=1;
+ if(Math.random()<.15&&sp.length<30)sp.push({x:Math.random()*W,y:Math.random()*H,l:0,s:(6+Math.random()*10)*d});
+ for(let i=sp.length-1;i>=0;i--){const q=sp[i];q.l+=.02;if(q.l>1){sp.splice(i,1);continue;}
+  cx.globalAlpha=Math.sin(q.l*Math.PI);cx.fillStyle='#ff4f9a';cx.font=(q.s*2)+'px serif';cx.fillText('✦',q.x,q.y);}
+ if(!shoot&&Math.random()<.006)shoot={x:W*.2+Math.random()*W*.8,y:Math.random()*H*.35,l:0};
+ if(shoot){shoot.l+=.025;const L=shoot.l,x=shoot.x-L*W*.4,y=shoot.y+L*H*.3;
+  const g=cx.createLinearGradient(x,y,x+W*.12,y-H*.09);g.addColorStop(0,'rgba(255,79,154,'+(1-L)+')');g.addColorStop(1,'rgba(255,79,154,0)');
+  cx.globalAlpha=1;cx.strokeStyle=g;cx.lineWidth=3*d;cx.beginPath();cx.moveTo(x,y);cx.lineTo(x+W*.12,y-H*.09);cx.stroke();
+  cx.fillStyle='#fff';cx.beginPath();cx.arc(x,y,3*d,0,7);cx.fill();
+  if(L>=1)shoot=null;}
+ cx.globalAlpha=1;
+ if(morphOn&&morph<1)morph=Math.min(1,morph+.01);
+}
+function flash(){const f=document.getElementById('flash');f.classList.add('go');setTimeout(()=>f.classList.remove('go'),1200);}
+function trail(x,y){
+ const e=document.createElement('div');e.className='fx';e.textContent=['💗','💕','♥'][Math.floor(Math.random()*3)];
+ e.style.left=(x-8)+'px';e.style.top=(y-8)+'px';e.style.fontSize=(10+Math.random()*10)+'px';
+ document.body.appendChild(e);setTimeout(()=>e.remove(),1000);
+}
+function burst(x,y,n,set){
+ for(let i=0;i<n;i++){const b=document.createElement('div');b.className='bu';b.textContent=set[i%set.length];
+  b.style.left=x+'px';b.style.top=y+'px';
+  b.style.setProperty('--dx',(Math.random()*280-140)+'px');b.style.setProperty('--dy',-(60+Math.random()*180)+'px');
+  document.body.appendChild(b);setTimeout(()=>b.remove(),1500);}
+}
+addEventListener('pointermove',e=>{const n=performance.now();if(n-lastT<60)return;lastT=n;trail(e.clientX,e.clientY);});
+addEventListener('pointerdown',e=>burst(e.clientX,e.clientY,10,['❤️','💗','💕']));
+function petal(){
+ const p=document.createElement('div'),s=10+Math.random()*10,dur=7+Math.random()*5;
+ p.className='pt';p.style.cssText='left:'+Math.random()*100+'%;width:'+s+'px;height:'+s*1.3+'px;animation-duration:'+dur+'s';
+ p.style.setProperty('--sx',(Math.random()*160-80)+'px');p.style.setProperty('--r',(Math.random()*540-270)+'deg');
+ document.body.appendChild(p);setTimeout(()=>p.remove(),dur*1000);
+}
+function finale(){
+ try{navigator.vibrate&&navigator.vibrate([90,70,90,400,90,70,90]);}catch(e){}
+ setTimeout(()=>setInterval(petal,450),1200);
+ setTimeout(()=>{document.getElementById('sec').classList.remove('hide');document.getElementById('kiss').classList.remove('hide');},6000);
+ setTimeout(()=>{morphOn=true;document.querySelector('.term').classList.add('clear');},7500);
+}
+document.getElementById('sec').onclick=e=>{
+ e.stopPropagation();burst(e.clientX,e.clientY,18,['💗','✨','💕']);
+ const t=document.createElement('div');t.className='toast';t.textContent='Ты нашла моё сердечко 💗';
+ document.body.appendChild(t);setTimeout(()=>t.remove(),3000);
+};
+document.getElementById('kiss').onclick=e=>{
+ const r=e.currentTarget.getBoundingClientRect();
+ burst(r.left+r.width/2,r.top,22,['💋','❤️','💗']);
+ try{navigator.vibrate&&navigator.vibrate(60);}catch(x){}
+};
+
+// дождь из сердец в финале
+function rain(){
+ setInterval(()=>{
+  const h=document.createElement('div');h.className='h';h.textContent=['❤️','💗','💕'][Math.floor(Math.random()*3)];
+  h.style.left=Math.random()*100+'%';h.style.fontSize=(18+Math.random()*24)+'px';h.style.opacity=1;
+  h.style.animationDuration=(5+Math.random()*4)+'s';h.style.position='fixed';h.style.zIndex=5;
+  document.body.appendChild(h);setTimeout(()=>h.remove(),9000);
+ },350);
+}
+</script>
+</body>
+</html>
